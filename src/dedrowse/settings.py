@@ -5,13 +5,13 @@ __version__ = '0.1.0'
 
 ALARM_SOUND = Knob(
     'DEDROWSE_ALARM_SOUND_PATH',
-    pkg_resources.resource_filename('', 'data/rooster.mp3'),
+    pkg_resources.resource_filename('dedrowse', 'data/rooster.mp3'),
     description='Alarm sound file,'
 )
 
 SHAPE_PREDICTOR = Knob(
     'DEBROWSE_SHAPE_PREDICTOR',
-    pkg_resources.resource_filename('', 'data/face.dat'),
+    pkg_resources.resource_filename('dedrowse', 'data/face.dat'),
     description='Path to facial landmark predictor'
 )
 

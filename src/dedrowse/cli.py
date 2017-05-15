@@ -82,8 +82,8 @@ def cli(shape_predictor, alarm, alarm_sound, webcam):
 
     # start the video stream thread
     print("[INFO] starting video stream thread...")
-    vs = VideoStream(src=webcam).start()
-    time.sleep(1.0)
+    vs = VideoStream(0).start()
+    time.sleep(3.0)
 
     # loop over frames from the video stream
     while True:
@@ -91,6 +91,9 @@ def cli(shape_predictor, alarm, alarm_sound, webcam):
         # it, and convert it to grayscale
         # channels)
         frame = vs.read()
+        if frame is None:
+            click.echo('No frame')
+            continue
         frame = imutils.resize(frame, width=450)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
