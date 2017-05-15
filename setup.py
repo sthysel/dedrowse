@@ -26,7 +26,9 @@ setup(
         'playsound',
         'imutils',
         'knobs',
-        'attentive'
+        'attentive',
+        'opencv-python',
+        'dlib'
     ],
     author='sthysel',
     author_email='sthysel@gmail.com',
@@ -34,9 +36,17 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
+    package_data={
+        'dedrowse': ['data/*.*'],
+    },
     include_package_data=True,
     zip_safe=False,
     keywords=[],
     extras_require={},
     setup_requires=[],
+    entry_points={
+        'console_scripts': [
+            'dedrowse=dedrowse.cli:cli',
+        ]
+    },
 )
