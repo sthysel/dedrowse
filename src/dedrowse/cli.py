@@ -1,5 +1,5 @@
 import time
-
+import sys
 import click
 import cv2
 import dlib
@@ -7,6 +7,8 @@ import imutils
 from imutils import face_utils
 from imutils.video import VideoStream
 from scipy.spatial import distance as dist
+
+from knobs import Knob
 
 from . import settings
 
@@ -110,8 +112,13 @@ def eye_aspect_ratio(eye):
     help=settings.FRAME_WIDTH.help(),
     default=settings.FRAME_WIDTH()
 )
-def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, alert_msg, webcam, frame_width):
+@click.option('--print-knobs', is_flag=True, help='Print knobs', default=False)
+def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, alert_msg, webcam, frame_width, print_knobs):
     """ Dedrowse daemon """
+
+    if print_knobs:
+        print(Knob.get_knob_defaults())
+        sys.exit(1)
 
     alarmer = AlarmDetector(blink_ratio, trigger=trigger, alert_message=alert_msg)
 

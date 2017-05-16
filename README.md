@@ -10,20 +10,29 @@ distance driver. Or an elite athlete training in the cut-throat world of competi
 NetFlix binge watching.
 
 
-
-
 ```
 Usage: dedrowse [OPTIONS]
 
   Dedrowse daemon
 
 Options:
-  -p, --shape-predictor TEXT  Path to facial landmark predictor, Default: data/face.dat
+  -p, --shape-predictor TEXT  Path to facial landmark predictor, Default: /hom
+                              e/thys/workspace/dedrowse/src/dedrowse/data/face
+                              .dat
+  -e, --blink-ratio FLOAT     Eye aspect ratio indicating blink, Default: 0.3
+                              [default: 0.3]
+  -t, --trigger INTEGER       The number of consecutive frames the eye must be
+                              below the threshold for to set off the alarm,
+                              Default: 48  [default: 48]
   -s, --set-alarm TEXT        Sound the Alarm, Default: True
-  --alarm-sound TEXT          Alarm sound file,, Default: /home/thys/workspace
-                              /dedrowse/src/dedrowse/data/alarm.wav
-  -w, --webcam TEXT           Path to webcam, Default:
+  --alarm-sound TEXT          Alarm sound file, Default: /home/thys/workspace/
+                              dedrowse/src/dedrowse/data/alarm.wav
+  -m, --alert-msg TEXT        Alert message, Default: DROWSINESS DETECTED
+  -c, --webcam INTEGER        Webcam number, Default: 0
+  -w, --frame-width INTEGER   Width of visualization frame, Default: 850
+  --print-knobs               Print knobs
   --help                      Show this message and exit.
+
 ```
 
 It works by assuming a drowsy face's eyes are closer that normal
@@ -32,6 +41,23 @@ It works by assuming a drowsy face's eyes are closer that normal
 
 
 ![](docs/close.png)
+
+
+# Config
+
+The follwing environmental variables can be set in the envrionment, or loaded
+from a .env file.
+
+```
+#DEBROWSE_ALARM=True
+#DEBROWSE_AR_CONSEC_FRAMES=48
+#DEBROWSE_BLINK_ASPECT_RATIO=0.3
+#DEBROWSE_FRAME_WIDTH=850
+#DEBROWSE_SHAPE_PREDICTOR=/home/thys/workspace/dedrowse/src/dedrowse/data/face.dat
+#DEBROWSE_WEBCAM=0
+#DEDROWSE_ALARM_SOUND_PATH=/home/thys/workspace/dedrowse/src/dedrowse/data/alarm.wav
+#DEDROWSE_ALERT_MESSAGE=DROWSINESS DETECTED
+```
 
 
 # Install
