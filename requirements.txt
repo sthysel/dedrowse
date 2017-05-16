@@ -1,9 +1,7 @@
 click==6.7
 imutils==0.4.3
 numpy==1.12.1
-playsound==1.2.1
 scipy==0.19.0
 knobs==0.2.8
 attentive==0.1.2
-#opencv-python>=3.2.0.7
 dlib==19.4.0

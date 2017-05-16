@@ -23,7 +23,6 @@ setup(
         'click',
         'numpy',
         'scipy',
-        'playsound',
         'imutils',
         'knobs',
         'attentive',

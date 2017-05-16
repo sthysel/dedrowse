@@ -2,9 +2,10 @@
 
 Dedrowse is a computer vision system that can automatically detect operator
 drowsiness in a real-time video stream and raise an alarm if the operator seems
-to be drowsy. A operator may be a truk driver or a crane operator, or long
-distance driver. Or a elite athlete training in the cut-throut world of competitive
-netflix binge watching.
+to be drowsy. A operator may be a truck driver or a crane operator, or long
+distance driver. Or an elite athlete training in the cut-throat world of competitive
+NetFlix binge watching.
+
 
 ![](docs/open.png)  ![](docs/close.png)
 
@@ -22,6 +23,10 @@ Options:
   -w, --webcam TEXT           Path to webcam, Default:
   --help                      Show this message and exit.
 ```
+
+
+![](docs/guy.png)
+
 
 # Install
 
