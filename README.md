@@ -8,15 +8,14 @@ netflix binge watching.
 
 ![](docs/open.png)  ![](docs/close.png)
 
+
 ```
 Usage: dedrowse [OPTIONS]
 
   Dedrowse daemon
 
 Options:
-  -p, --shape-predictor TEXT  Path to facial landmark predictor, Default: /hom
-                              e/thys/workspace/dedrowse/src/dedrowse/data/face
-                              .dat
+  -p, --shape-predictor TEXT  Path to facial landmark predictor, Default: data/face.dat
   -s, --set-alarm TEXT        Sound the Alarm, Default: True
   --alarm-sound TEXT          Alarm sound file,, Default: /home/thys/workspace
                               /dedrowse/src/dedrowse/data/alarm.wav
@@ -24,6 +23,12 @@ Options:
   --help                      Show this message and exit.
 ```
 
+# Install
+
+This system is built arround opencv, numpy and scipy. On Arch its important to use the 
+pre-built Python wrappers that supports the FFMpeg video stream handling. So use the sytem
+site packages as installed by pacman. Not python-opencv that ships a pre-built opencv lib in the
+wheel that does not have mgeg video streaming support compiled in.
 
 # System dependencies                                                                                              
                                                                                                                     
@@ -32,6 +37,15 @@ Arch Linux:
 ```bash                                                                                                             
 $ sudo pacman -S cmake boost
 ```                                                                                                                 
+
+## Development 
+
+```bash                                                                                                             
+$ mkvirtualenv --system-site-packages dedrowse
+$ pip install -r requirement.txt
+$ pip install -e .
+```                                                                                                                 
+
                                                                                                                     
 # Resources                                                                                                         
                                                                                                                     
