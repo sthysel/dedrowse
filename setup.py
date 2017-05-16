@@ -27,7 +27,6 @@ setup(
         'imutils',
         'knobs',
         'attentive',
-        'opencv-python',
         'dlib'
     ],
     author='sthysel',
