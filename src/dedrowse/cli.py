@@ -1,5 +1,4 @@
 import time
-from threading import Thread
 
 import click
 import cv2
@@ -9,8 +8,44 @@ from imutils import face_utils
 from imutils.video import VideoStream
 from scipy.spatial import distance as dist
 
-from . import alarm
 from . import settings
+
+
+class AlarmDetector:
+    def __init__(self, blink_ratio, trigger, alert_message):
+        self.blink_ratio = blink_ratio
+        self.trigger = trigger
+        self.alert_message = alert_message
+
+        self._counter = 0
+        self.alarm = False
+
+    def check(self, current_ear_value, frame):
+        """
+        If the eye aspect ratio is below the blink threshold, tally trigger to alarm
+        """
+        if current_ear_value < self.blink_ratio:
+            self._counter += 1
+        else:
+            # reset counter
+            self._counter = 0
+            self.alarm = False
+
+        if self._counter >= self.trigger:
+            self.alarm = True
+            self.draw_alarm(frame=frame, alert_msg=self.alert_message)
+
+    def draw_alarm(self, frame, alert_msg):
+        """ draw an alarm on the frame """
+
+        cv2.putText(
+            frame,
+            alert_msg,
+            (10, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.7,
+            (0, 0, 255),
+            2)
 
 
 def eye_aspect_ratio(eye):
@@ -61,17 +96,24 @@ def eye_aspect_ratio(eye):
     default=settings.ALARM_SOUND()
 )
 @click.option(
-    '-w', '--webcam',
+    '-m', '--alert-msg',
+    help=settings.ALERT_MESSAGE.help(),
+    default=settings.ALERT_MESSAGE()
+)
+@click.option(
+    '-c', '--webcam',
     help=settings.WEBCAM.help(),
     default=settings.WEBCAM()
 )
-def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, webcam):
+@click.option(
+    '-w', '--frame-width',
+    help=settings.FRAME_WIDTH.help(),
+    default=settings.FRAME_WIDTH()
+)
+def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, alert_msg, webcam, frame_width):
     """ Dedrowse daemon """
 
-    # initialize the frame counter as well as a boolean used to
-    # indicate if the alarm is going off
-    COUNTER = 0
-    ALARM_ON = False
+    alarmer = AlarmDetector(blink_ratio, trigger=trigger, alert_message=alert_msg)
 
     # initialize dlib's face detector (HOG-based) and then create
     # the facial landmark predictor
@@ -99,18 +141,18 @@ def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, webcam):
             time.sleep(1)
             continue
 
-        frame = imutils.resize(frame, width=450)
+        frame = imutils.resize(frame, width=frame_width)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # detect faces in the grayscale frame
-        rects = detector(gray, 0)
+        faces = detector(gray, 0)
 
         # loop over the face detections
-        for rect in rects:
+        for face in faces:
             # determine the facial landmarks for the face region, then
             # convert the facial landmark (x, y)-coordinates to a NumPy
             # array
-            shape = predictor(gray, rect)
+            shape = predictor(gray, face)
             shape = face_utils.shape_to_np(shape)
 
             # extract the left and right eye coordinates, then use the
@@ -122,58 +164,12 @@ def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, webcam):
 
             # average the eye aspect ratio together for both eyes
             ear = (left_ear + right_ear) / 2.0
+            alarmer.check(ear, frame)
 
-            # compute the convex hull for the left and right eye, then
-            # visualize each of the eyes
-            left_eye_hull = cv2.convexHull(left_eye)
-            right_eye_hull = cv2.convexHull(right_eye)
-            cv2.drawContours(frame, [left_eye_hull], -1, (0, 255, 0), 1)
-            cv2.drawContours(frame, [right_eye_hull], -1, (0, 255, 0), 1)
-
-            # check to see if the eye aspect ratio is below the blink
-            # threshold, and if so, increment the blink frame counter
-            if ear < blink_ratio:
-                COUNTER += 1
-
-                # if the eyes were closed for a sufficient number of
-                # then sound the alarm
-                if COUNTER >= trigger:
-                    # if the alarm is not on, turn it on
-                    if not ALARM_ON:
-                        ALARM_ON = True
-
-                        # check to see if an alarm file was supplied,
-                        # and if so, start a thread to have the alarm
-                        # sound played in the background
-                        if alarm:
-                            t = Thread(target=alarm.sound_alarm, args=[alarm_sound])
-                            t.deamon = True
-                            t.start()
-
-                    # draw an alarm on the frame
-                    cv2.putText(frame, "DROWSINESS ALERT!", (10, 30),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-
-            # otherwise, the eye aspect ratio is not below the blink
-            # threshold, so reset the counter and alarm
-            else:
-                COUNTER = 0
-                ALARM_ON = False
-
-            # draw the computed eye aspect ratio on the frame to help
-            # with debugging and setting the correct eye aspect ratio
-            # thresholds and frame counters
-            cv2.putText(
-                frame,
-                "EAR: {:.2f}".format(ear),
-                (300, 30),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.7,
-                (0, 0, 255),
-                2)
+            draw_eyes(ear, frame, left_eye, right_eye)
 
         # show the frame
-        cv2.imshow("Frame", frame)
+        cv2.imshow('No naps for you', frame)
         key = cv2.waitKey(1) & 0xFF
 
         # if the `q` key was pressed, break from the loop
@@ -183,3 +179,23 @@ def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, webcam):
     # do a bit of cleanup
     cv2.destroyAllWindows()
     vs.stop()
+
+
+def draw_eyes(ear, frame, left_eye, right_eye):
+    # compute the convex hull for the left and right eye, then
+    # visualize each of the eyes
+    left_eye_hull = cv2.convexHull(left_eye)
+    right_eye_hull = cv2.convexHull(right_eye)
+    cv2.drawContours(frame, [left_eye_hull], -1, (0, 255, 0), 1)
+    cv2.drawContours(frame, [right_eye_hull], -1, (0, 255, 0), 1)
+    # draw the computed eye aspect ratio on the frame to help
+    # with debugging and setting the correct eye aspect ratio
+    # thresholds and frame counters
+    cv2.putText(
+        frame,
+        "eye ar: {:.2f}".format(ear),
+        (300, 30),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.7,
+        (0, 0, 255),
+        2)
