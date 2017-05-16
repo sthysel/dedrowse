@@ -7,20 +7,24 @@ import imutils
 from imutils import face_utils
 from imutils.video import VideoStream
 from scipy.spatial import distance as dist
-
+from .audio_alarm import AudioAlarm
 from knobs import Knob
 
 from . import settings
 
 
 class AlarmDetector:
+    RED = (0, 0, 255)
+    GREEN = (0, 255, 0)
+
     def __init__(self, blink_ratio, trigger, alert_message):
         self.blink_ratio = blink_ratio
         self.trigger = trigger
         self.alert_message = alert_message
 
         self._counter = 0
-        self.alarm = False
+        # self.audio_alarm = AudioAlarm()
+        # self.audio_alarm.start()
 
     def check(self, current_ear_value, frame):
         """
@@ -28,25 +32,26 @@ class AlarmDetector:
         """
         if current_ear_value < self.blink_ratio:
             self._counter += 1
+            self.draw_on_frame(frame=frame, alert_msg='{}'.format(self._counter), colour=self.GREEN)
         else:
             # reset counter
             self._counter = 0
-            self.alarm = False
+            # self.audio_alarm.on = False
 
         if self._counter >= self.trigger:
-            self.alarm = True
-            self.draw_alarm(frame=frame, alert_msg=self.alert_message)
+            # self.audio_alarm.on = True
+            self.draw_on_frame(frame=frame, alert_msg=self.alert_message)
 
-    def draw_alarm(self, frame, alert_msg):
+    def draw_on_frame(self, frame, alert_msg, position=(10, 30), colour=RED):
         """ draw an alarm on the frame """
 
         cv2.putText(
             frame,
             alert_msg,
-            (10, 30),
+            position,
             cv2.FONT_HERSHEY_SIMPLEX,
             0.7,
-            (0, 0, 255),
+            colour,
             2)
 
 
@@ -55,15 +60,15 @@ def eye_aspect_ratio(eye):
     compute the euclidean distances between the two sets of
     vertical eye landmarks (x, y) coordinates
     """
-    A = dist.euclidean(eye[1], eye[5])
-    B = dist.euclidean(eye[2], eye[4])
+    a = dist.euclidean(eye[1], eye[5])
+    b = dist.euclidean(eye[2], eye[4])
 
     # compute the euclidean distance between the horizontal
     # eye landmark (x, y)-coordinates
-    C = dist.euclidean(eye[0], eye[3])
+    c = dist.euclidean(eye[0], eye[3])
 
     # compute the eye aspect ratio
-    ear = (A + B) / (2.0 * C)
+    ear = (a + b) / (2.0 * c)
 
     # return the eye aspect ratio
     return ear
@@ -176,7 +181,7 @@ def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, alert_msg
             draw_eyes(ear, frame, left_eye, right_eye)
 
         # show the frame
-        cv2.imshow('No naps for you', frame)
+        cv2.imshow('Dedrowser is looking out for you', frame)
         key = cv2.waitKey(1) & 0xFF
 
         # if the `q` key was pressed, break from the loop
