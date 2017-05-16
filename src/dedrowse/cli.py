@@ -1,16 +1,15 @@
-from scipy.spatial import distance as dist
-from imutils.video import VideoStream
-from imutils import face_utils
-from threading import Thread
-import numpy as np
-import imutils
 import time
-import dlib
+from threading import Thread
+
+import click
 import cv2
+import dlib
+import imutils
+from imutils import face_utils
+from imutils.video import VideoStream
+from scipy.spatial import distance as dist
 
 from . import alarm
-import click
-
 from . import settings
 
 
@@ -40,6 +39,18 @@ def eye_aspect_ratio(eye):
     default=settings.SHAPE_PREDICTOR()
 )
 @click.option(
+    '-e', '--blink-ratio',
+    help=settings.BLINK_ASPECT_RATIO.help(),
+    show_default=True,
+    default=settings.BLINK_ASPECT_RATIO()
+)
+@click.option(
+    '-t', '--trigger',
+    help=settings.EYE_AR_CONSEC_FRAMES.help(),
+    show_default=True,
+    default=settings.EYE_AR_CONSEC_FRAMES()
+)
+@click.option(
     '-s', '--set-alarm',
     help=settings.ALARM.help(),
     default=settings.ALARM()
@@ -54,15 +65,8 @@ def eye_aspect_ratio(eye):
     help=settings.WEBCAM.help(),
     default=settings.WEBCAM()
 )
-def cli(shape_predictor, set_alarm, alarm_sound, webcam):
+def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, webcam):
     """ Dedrowse daemon """
-
-    # define two constants, one for the eye aspect ratio to indicate
-    # blink and then a second constant for the number of consecutive
-    # frames the eye must be below the threshold for to set off the
-    # alarm
-    EYE_AR_THRESH = 0.3
-    EYE_AR_CONSEC_FRAMES = 48
 
     # initialize the frame counter as well as a boolean used to
     # indicate if the alarm is going off
@@ -77,13 +81,12 @@ def cli(shape_predictor, set_alarm, alarm_sound, webcam):
 
     # grab the indexes of the facial landmarks for the left and
     # right eye, respectively
-    l_start, l_end = face_utils.FACIAL_LANDMARKS_IDXS["left_eye"]
-    r_start, r_end = face_utils.FACIAL_LANDMARKS_IDXS["right_eye"]
+    l_start, l_end = face_utils.FACIAL_LANDMARKS_IDXS['left_eye']
+    r_start, r_end = face_utils.FACIAL_LANDMARKS_IDXS['right_eye']
 
     # start the video stream thread
     click.echo('Starting video stream thread')
-    vs = VideoStream(0).start()
-    time.sleep(3.0)
+    vs = VideoStream(webcam).start()
 
     # loop over frames from the video stream
     while True:
@@ -93,7 +96,9 @@ def cli(shape_predictor, set_alarm, alarm_sound, webcam):
         frame = vs.read()
         if frame is None:
             click.echo('No frame')
+            time.sleep(1)
             continue
+
         frame = imutils.resize(frame, width=450)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -127,12 +132,12 @@ def cli(shape_predictor, set_alarm, alarm_sound, webcam):
 
             # check to see if the eye aspect ratio is below the blink
             # threshold, and if so, increment the blink frame counter
-            if ear < EYE_AR_THRESH:
+            if ear < blink_ratio:
                 COUNTER += 1
 
                 # if the eyes were closed for a sufficient number of
                 # then sound the alarm
-                if COUNTER >= EYE_AR_CONSEC_FRAMES:
+                if COUNTER >= trigger:
                     # if the alarm is not on, turn it on
                     if not ALARM_ON:
                         ALARM_ON = True

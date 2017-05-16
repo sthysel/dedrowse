@@ -17,11 +17,21 @@ SHAPE_PREDICTOR = Knob(
 
 WEBCAM = Knob(
     'DEBROWSE_WEBCAM',
-    '',
-    description='Path to webcam'
+    0,
+    description='Webcam number'
 )
 
 ALARM = Knob(
     'DEBROWSE_ALARM', True,
     description='Sound the Alarm'
+)
+
+BLINK_ASPECT_RATIO = Knob(
+    'DEBROWSE_BLINK_ASPECT_RATIO', 0.3,
+    description='Eye aspect ratio indicating blink',
+)
+
+EYE_AR_CONSEC_FRAMES = Knob(
+    'DEBROWSE_AR_CONSEC_FRAMES', 48,
+    description='The number of consecutive frames the eye must be below the threshold for to set off the alarm',
 )
