@@ -8,6 +8,23 @@ netflix binge watching.
 
 ![](docs/open.png)  ![](docs/close.png)
 
+```
+Usage: dedrowse [OPTIONS]
+
+  Dedrowse daemon
+
+Options:
+  -p, --shape-predictor TEXT  Path to facial landmark predictor, Default: /hom
+                              e/thys/workspace/dedrowse/src/dedrowse/data/face
+                              .dat
+  -s, --set-alarm TEXT        Sound the Alarm, Default: True
+  --alarm-sound TEXT          Alarm sound file,, Default: /home/thys/workspace
+                              /dedrowse/src/dedrowse/data/alarm.wav
+  -w, --webcam TEXT           Path to webcam, Default:
+  --help                      Show this message and exit.
+```
+
+
 # System dependencies                                                                                              
                                                                                                                     
 Arch Linux:                                                                                                         
