@@ -40,7 +40,7 @@ def eye_aspect_ratio(eye):
     default=settings.SHAPE_PREDICTOR()
 )
 @click.option(
-    '-a', '--alarm',
+    '-s', '--set-alarm',
     help=settings.ALARM.help(),
     default=settings.ALARM()
 )
@@ -54,7 +54,7 @@ def eye_aspect_ratio(eye):
     help=settings.WEBCAM.help(),
     default=settings.WEBCAM()
 )
-def cli(shape_predictor, alarm, alarm_sound, webcam):
+def cli(shape_predictor, set_alarm, alarm_sound, webcam):
     """ Dedrowse daemon """
 
     # define two constants, one for the eye aspect ratio to indicate
@@ -81,7 +81,7 @@ def cli(shape_predictor, alarm, alarm_sound, webcam):
     r_start, r_end = face_utils.FACIAL_LANDMARKS_IDXS["right_eye"]
 
     # start the video stream thread
-    print("[INFO] starting video stream thread...")
+    click.echo('Starting video stream thread')
     vs = VideoStream(0).start()
     time.sleep(3.0)
 
@@ -141,7 +141,7 @@ def cli(shape_predictor, alarm, alarm_sound, webcam):
                         # and if so, start a thread to have the alarm
                         # sound played in the background
                         if alarm:
-                            t = Thread(target=alarm.sound_alarm, args=alarm_sound)
+                            t = Thread(target=alarm.sound_alarm, args=[alarm_sound])
                             t.deamon = True
                             t.start()
 

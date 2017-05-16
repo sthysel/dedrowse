@@ -5,7 +5,7 @@ __version__ = '0.1.0'
 
 ALARM_SOUND = Knob(
     'DEDROWSE_ALARM_SOUND_PATH',
-    pkg_resources.resource_filename('dedrowse', 'data/rooster.mp3'),
+    pkg_resources.resource_filename('dedrowse', 'data/alarm.wav'),
     description='Alarm sound file,'
 )
 

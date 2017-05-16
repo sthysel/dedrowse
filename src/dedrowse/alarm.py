@@ -1,4 +1,4 @@
-import playsound
+#import vlc
 
 def sound_alarm(path):
     """
@@ -6,4 +6,7 @@ def sound_alarm(path):
     :param path: 
     :return: 
     """
-    playsound.playsound(path)
+
+    # p = vlc.MediaPlayer("file:///{}".format(path))
+    # p.play()
+
