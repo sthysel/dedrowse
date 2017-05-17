@@ -9,6 +9,8 @@ to be drowsy. A operator may be a truck driver or a crane operator, or long
 distance driver. Or an elite athlete training in the cut-throat world of competitive
 NetFlix binge watching.
 
+It is built on work by [Adrian Rosebrock](http://www.pyimagesearch.com/2017/05/08/drowsiness-detection-opencv/)
+
 
 ```
 Usage: dedrowse [OPTIONS]
