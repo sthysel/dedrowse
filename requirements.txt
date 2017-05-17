@@ -5,3 +5,4 @@ scipy==0.19.0
 knobs==0.2.8
 attentive==0.1.2
 dlib==19.4.0
+PyAudio==0.2.11

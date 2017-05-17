@@ -26,7 +26,8 @@ setup(
         'imutils',
         'knobs',
         'attentive',
-        'dlib'
+        'dlib',
+        'pyaudio',
     ],
     author='sthysel',
     author_email='sthysel@gmail.com',
