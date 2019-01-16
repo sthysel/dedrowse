@@ -2,6 +2,8 @@
 --index-url http://iorper-hdl01/magnet/release
 --trusted-host iorper-hdl01
 
+opencv-contrib-python==4.0.0.21
+tabulate==0.8.2
 click==7.0
 imutils==0.5.2
 numpy==1.16.0
@@ -10,3 +12,4 @@ knobs==2.0.1
 attentive==0.1.5
 dlib==19.16.0
 PyAudio==0.2.11
+
