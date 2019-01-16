@@ -1,8 +1,12 @@
-click==6.7
-imutils==0.4.3
-numpy==1.12.1
-scipy==0.19.0
-knobs==0.2.8
-attentive==0.1.2
-dlib==19.4.0
+# drop this when not on APAC
+--index-url http://iorper-hdl01/magnet/release
+--trusted-host iorper-hdl01
+
+click==7.0
+imutils==0.5.2
+numpy==1.16.0
+scipy==1.2.0
+knobs==2.0.1
+attentive==0.1.5
+dlib==19.16.0
 PyAudio==0.2.11
