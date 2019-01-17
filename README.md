@@ -11,22 +11,16 @@ It is built on work by [Adrian Rosebrock](http://www.pyimagesearch.com/2017/05/0
 
 
 ```zsh
+
 Usage: dedrowse [OPTIONS]
 
   Dedrowse drowsines detector
 
 Options:
-  -p, --shape-predictor TEXT  Path to facial landmark predictor  [default: /ho
-                              me/thys/workspace/bhp/si/dedrowse/src/dedrowse/d
-                              ata/face.dat]
-  -e, --blink-ratio FLOAT     Eye aspect ratio indicating blink  [default:
-                              0.3]
-  -t, --trigger INTEGER       The number of consecutive frames the eye must be
-                              below the threshold for to set off the alarm
-                              [default: 48]
-  -s, --set-alarm TEXT        Sound the Alarm  [default: True]
-  --alarm-sound TEXT          Alarm sound file  [default: /home/thys/workspace
-                              /bhp/si/dedrowse/src/dedrowse/data/alarm.wav]
+  -p, --shape-predictor TEXT  Path to facial landmark predictor  [default: /ho me/thys/workspace/bhp/si/dedrowse/src/dedrowse/d ata/face.dat]
+  -e, --blink-ratio FLOAT     Eye aspect ratio indicating blink  [default: 0.3]
+  -t, --trigger INTEGER       The number of consecutive frames the eye must be below the threshold for to set off the alarm [default: 48]
+  -s, --set-alarm TEXT        Sound the Alarm  [default: True] --alarm-sound TEXT          Alarm sound file  [default: /home/thys/workspace /bhp/si/dedrowse/src/dedrowse/data/alarm.wav]
   -m, --alert-msg TEXT        Alert message  [default: DROWSINESS DETECTED]
   -c, --webcam INTEGER        Webcam number  [default: 0]
   -w, --frame-width INTEGER   Width of visualization frame  [default: 850]
@@ -49,6 +43,7 @@ The follwing environmental variables can be set in the envrionment, or loaded
 from a .env file.
 
 ```zsh
+
 #DEBROWSE_ALARM=True
 #DEBROWSE_AR_CONSEC_FRAMES=48
 #DEBROWSE_BLINK_ASPECT_RATIO=0.3
@@ -57,6 +52,7 @@ from a .env file.
 #DEBROWSE_WEBCAM=0
 #DEDROWSE_ALARM_SOUND_PATH=/home/thys/workspace/dedrowse/src/dedrowse/data/alarm.wav
 #DEDROWSE_ALERT_MESSAGE=DROWSINESS DETECTED
+
 ```
 
 
@@ -68,10 +64,12 @@ Python and OpenCV versions was also shown to work.
 Check out source, enter repo and do:
 
 ```zsh
+
 $ python -m venv ~/.virtualenvs/dedrowse
 $ source ~/.virtualenvs/dedrowse/bin/activate
 $ pip install -r requirements.txt
 $ pip install .
+
 ```
 
 A devpi, rpm, deb or docker image can be arranged if required.
