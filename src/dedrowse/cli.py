@@ -69,30 +69,81 @@ def eye_aspect_ratio(eye):
     return ear
 
 
-@click.command()
-@click.option('-p', '--shape-predictor', help=settings.SHAPE_PREDICTOR.help(), default=settings.SHAPE_PREDICTOR())
+@click.command(context_settings=dict(max_content_width=120))
+@click.option(
+    '-p',
+    '--shape-predictor',
+    help=settings.SHAPE_PREDICTOR.description,
+    default=settings.SHAPE_PREDICTOR(),
+    show_default=True,
+)
 @click.option(
     '-e',
     '--blink-ratio',
-    help=settings.BLINK_ASPECT_RATIO.help(),
+    help=settings.BLINK_ASPECT_RATIO.description,
+    default=settings.BLINK_ASPECT_RATIO(),
     show_default=True,
-    default=settings.BLINK_ASPECT_RATIO()
 )
 @click.option(
     '-t',
     '--trigger',
-    help=settings.EYE_AR_CONSEC_FRAMES.help(),
+    help=settings.EYE_AR_CONSEC_FRAMES.description,
+    default=settings.EYE_AR_CONSEC_FRAMES(),
     show_default=True,
-    default=settings.EYE_AR_CONSEC_FRAMES()
 )
-@click.option('-s', '--set-alarm', help=settings.ALARM.help(), default=settings.ALARM())
-@click.option('--alarm-sound', help=settings.ALARM_SOUND.help(), default=settings.ALARM_SOUND())
-@click.option('-m', '--alert-msg', help=settings.ALERT_MESSAGE.help(), default=settings.ALERT_MESSAGE())
-@click.option('-c', '--webcam', help=settings.WEBCAM.help(), default=settings.WEBCAM())
-@click.option('-w', '--frame-width', help=settings.FRAME_WIDTH.help(), default=settings.FRAME_WIDTH())
-@click.option('--print-knobs', is_flag=True, help='Print knobs', default=False)
-def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, alert_msg, webcam, frame_width, print_knobs):
-    """ Dedrowse daemon """
+@click.option(
+    '-s',
+    '--set-alarm',
+    help=settings.ALARM.description,
+    default=settings.ALARM(),
+    show_default=True,
+)
+@click.option(
+    '--alarm-sound',
+    help=settings.ALARM_SOUND.description,
+    default=settings.ALARM_SOUND(),
+    show_default=True,
+)
+@click.option(
+    '-m',
+    '--alert-msg',
+    help=settings.ALERT_MESSAGE.description,
+    default=settings.ALERT_MESSAGE(),
+    show_default=True,
+)
+@click.option(
+    '-c',
+    '--webcam',
+    help=settings.WEBCAM.description,
+    default=settings.WEBCAM(),
+    show_default=True,
+)
+@click.option(
+    '-w',
+    '--frame-width',
+    help=settings.FRAME_WIDTH.description,
+    default=settings.FRAME_WIDTH(),
+    show_default=True,
+)
+@click.option(
+    '--print-knobs',
+    is_flag=True,
+    help='Print knobs',
+    default=False,
+    show_default=True,
+)
+def cli(
+    shape_predictor,
+    blink_ratio,
+    trigger,
+    set_alarm,
+    alarm_sound,
+    alert_msg,
+    webcam,
+    frame_width,
+    print_knobs,
+):
+    """ Dedrowse drowsines detector """
 
     if print_knobs:
         print(Knob.get_knob_defaults())

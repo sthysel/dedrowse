@@ -10,37 +10,37 @@ NetFlix binge watching.
 It is built on work by [Adrian Rosebrock](http://www.pyimagesearch.com/2017/05/08/drowsiness-detection-opencv/)
 
 
-```
+```zsh
 Usage: dedrowse [OPTIONS]
 
-  Dedrowse daemon
+  Dedrowse drowsines detector
 
 Options:
-  -p, --shape-predictor TEXT  Path to facial landmark predictor, Default: /hom
-                              e/thys/workspace/dedrowse/src/dedrowse/data/face
-                              .dat
-  -e, --blink-ratio FLOAT     Eye aspect ratio indicating blink, Default: 0.3
-                              [default: 0.3]
+  -p, --shape-predictor TEXT  Path to facial landmark predictor  [default: /ho
+                              me/thys/workspace/bhp/si/dedrowse/src/dedrowse/d
+                              ata/face.dat]
+  -e, --blink-ratio FLOAT     Eye aspect ratio indicating blink  [default:
+                              0.3]
   -t, --trigger INTEGER       The number of consecutive frames the eye must be
-                              below the threshold for to set off the alarm,
-                              Default: 48  [default: 48]
-  -s, --set-alarm TEXT        Sound the Alarm, Default: True
-  --alarm-sound TEXT          Alarm sound file, Default: /home/thys/workspace/
-                              dedrowse/src/dedrowse/data/alarm.wav
-  -m, --alert-msg TEXT        Alert message, Default: DROWSINESS DETECTED
-  -c, --webcam INTEGER        Webcam number, Default: 0
-  -w, --frame-width INTEGER   Width of visualization frame, Default: 850
-  --print-knobs               Print knobs
+                              below the threshold for to set off the alarm
+                              [default: 48]
+  -s, --set-alarm TEXT        Sound the Alarm  [default: True]
+  --alarm-sound TEXT          Alarm sound file  [default: /home/thys/workspace
+                              /bhp/si/dedrowse/src/dedrowse/data/alarm.wav]
+  -m, --alert-msg TEXT        Alert message  [default: DROWSINESS DETECTED]
+  -c, --webcam INTEGER        Webcam number  [default: 0]
+  -w, --frame-width INTEGER   Width of visualization frame  [default: 850]
+  --print-knobs               Print knobs  [default: False]
   --help                      Show this message and exit.
 
 ```
 
 It works by assuming a drowsy face's eyes are closer that normal
 
-![](docs/open.png) 
+![Open](docs/open.png) 
 
 
-![](docs/close.png)
+![Close](docs/close.png)
 
 
 # Config
@@ -48,7 +48,7 @@ It works by assuming a drowsy face's eyes are closer that normal
 The follwing environmental variables can be set in the envrionment, or loaded
 from a .env file.
 
-```
+```zsh
 #DEBROWSE_ALARM=True
 #DEBROWSE_AR_CONSEC_FRAMES=48
 #DEBROWSE_BLINK_ASPECT_RATIO=0.3
@@ -62,6 +62,21 @@ from a .env file.
 
 # Install
 
+Tested on a modern Arch Linux install Using Python 3.7 and OpenCV 4.0. Older
+Python and OpenCV versions was also shown to work.
+
+Check out source, enter repo and do:
+
+```zsh
+$ python -m venv ~/.virtualenvs/dedrowse
+$ source ~/.virtualenvs/dedrowse/bin/activate
+$ pip install -r requirements.txt
+$ pip install .
+```
+
+A devpi, rpm, deb or docker image can be arranged if required.
+
+## Old pre-OpenCV 4 Notes
 This system is built arround opencv, numpy and scipy. On Arch its important to use the 
 pre-built Python wrappers that supports the FFMpeg video stream handling. So use the sytem
 site packages as installed by pacman. Not python-opencv that ships a pre-built opencv lib in the
