@@ -1,5 +1,6 @@
 # Dedrowse is a drowsiness detector
 
+![](docs/guy.png) 
 
 Dedrowse is a computer vision system that can automatically detect operator
 drowsiness in a real-time video stream and raise an alarm if the operator seems
