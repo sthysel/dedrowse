@@ -1,5 +1,4 @@
 -r requirements.txt
-
 yapf
 epc
 importmagic

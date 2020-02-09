@@ -2,7 +2,6 @@ import sys
 import time
 
 import click
-
 import cv2
 import dlib
 import imutils
