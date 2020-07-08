@@ -26,7 +26,9 @@ setup(
         'imutils',
         'knobs',
         'attentive',
-        'dlib'
+        'dlib',
+        'opencv-python',
+        'pyaudio',
     ],
     author='sthysel',
     author_email='sthysel@gmail.com',
