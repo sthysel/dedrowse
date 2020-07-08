@@ -1,0 +1,21 @@
+Usage: dedrowse [OPTIONS]
+
+  Dedrowse drowsines detector
+
+Options:
+  -p, --shape-predictor TEXT  Path to facial landmark predictor  [default: /ho
+                              me/thys/workspace/bhp/si/dedrowse/src/dedrowse/d
+                              ata/face.dat]
+  -e, --blink-ratio FLOAT     Eye aspect ratio indicating blink  [default:
+                              0.3]
+  -t, --trigger INTEGER       The number of consecutive frames the eye must be
+                              below the threshold for to set off the alarm
+                              [default: 48]
+  -s, --set-alarm TEXT        Sound the Alarm  [default: True]
+  --alarm-sound TEXT          Alarm sound file  [default: /home/thys/workspace
+                              /bhp/si/dedrowse/src/dedrowse/data/alarm.wav]
+  -m, --alert-msg TEXT        Alert message  [default: DROWSINESS DETECTED]
+  -c, --webcam INTEGER        Webcam number  [default: 0]
+  -w, --frame-width INTEGER   Width of visualization frame  [default: 850]
+  --print-knobs               Print knobs  [default: False]
+  --help                      Show this message and exit.

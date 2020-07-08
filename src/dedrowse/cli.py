@@ -1,16 +1,17 @@
-import time
 import sys
+import time
+
 import click
 import cv2
 import dlib
 import imutils
 from imutils import face_utils
 from imutils.video import VideoStream
-from scipy.spatial import distance as dist
-from .audio_alarm import AudioAlarm
 from knobs import Knob
+from scipy.spatial import distance as dist
 
 from . import settings
+from .audio_alarm import AudioAlarm
 
 
 class AlarmDetector:
@@ -32,7 +33,7 @@ class AlarmDetector:
         """
         if current_ear_value < self.blink_ratio:
             self._counter += 1
-            self.draw_on_frame(frame=frame, alert_msg='{}'.format(self._counter), colour=self.GREEN)
+            self.draw_on_frame(frame=frame, alert_msg=f'{self._counter}', colour=self.GREEN)
         else:
             # reset counter
             self._counter = 0
@@ -45,18 +46,11 @@ class AlarmDetector:
     def draw_on_frame(self, frame, alert_msg, position=(10, 30), colour=RED):
         """ draw an alarm on the frame """
 
-        cv2.putText(
-            frame,
-            alert_msg,
-            position,
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.7,
-            colour,
-            2)
+        cv2.putText(frame, alert_msg, position, cv2.FONT_HERSHEY_SIMPLEX, 0.7, colour, 2)
 
 
 def eye_aspect_ratio(eye):
-    """ 
+    """
     compute the euclidean distances between the two sets of
     vertical eye landmarks (x, y) coordinates
     """
@@ -74,52 +68,81 @@ def eye_aspect_ratio(eye):
     return ear
 
 
-@click.command()
+@click.command(context_settings=dict(max_content_width=120))
 @click.option(
-    '-p', '--shape-predictor',
-    help=settings.SHAPE_PREDICTOR.help(),
-    default=settings.SHAPE_PREDICTOR()
-)
-@click.option(
-    '-e', '--blink-ratio',
-    help=settings.BLINK_ASPECT_RATIO.help(),
+    '-p',
+    '--shape-predictor',
+    help=settings.SHAPE_PREDICTOR.description,
+    default=settings.SHAPE_PREDICTOR(),
     show_default=True,
-    default=settings.BLINK_ASPECT_RATIO()
 )
 @click.option(
-    '-t', '--trigger',
-    help=settings.EYE_AR_CONSEC_FRAMES.help(),
+    '-e',
+    '--blink-ratio',
+    help=settings.BLINK_ASPECT_RATIO.description,
+    default=settings.BLINK_ASPECT_RATIO(),
     show_default=True,
-    default=settings.EYE_AR_CONSEC_FRAMES()
 )
 @click.option(
-    '-s', '--set-alarm',
-    help=settings.ALARM.help(),
-    default=settings.ALARM()
+    '-t',
+    '--trigger',
+    help=settings.EYE_AR_CONSEC_FRAMES.description,
+    default=settings.EYE_AR_CONSEC_FRAMES(),
+    show_default=True,
+)
+@click.option(
+    '-s',
+    '--set-alarm',
+    help=settings.ALARM.description,
+    default=settings.ALARM(),
+    show_default=True,
 )
 @click.option(
     '--alarm-sound',
-    help=settings.ALARM_SOUND.help(),
-    default=settings.ALARM_SOUND()
+    help=settings.ALARM_SOUND.description,
+    default=settings.ALARM_SOUND(),
+    show_default=True,
 )
 @click.option(
-    '-m', '--alert-msg',
-    help=settings.ALERT_MESSAGE.help(),
-    default=settings.ALERT_MESSAGE()
+    '-m',
+    '--alert-msg',
+    help=settings.ALERT_MESSAGE.description,
+    default=settings.ALERT_MESSAGE(),
+    show_default=True,
 )
 @click.option(
-    '-c', '--webcam',
-    help=settings.WEBCAM.help(),
-    default=settings.WEBCAM()
+    '-c',
+    '--webcam',
+    help=settings.WEBCAM.description,
+    default=settings.WEBCAM(),
+    show_default=True,
 )
 @click.option(
-    '-w', '--frame-width',
-    help=settings.FRAME_WIDTH.help(),
-    default=settings.FRAME_WIDTH()
+    '-w',
+    '--frame-width',
+    help=settings.FRAME_WIDTH.description,
+    default=settings.FRAME_WIDTH(),
+    show_default=True,
 )
-@click.option('--print-knobs', is_flag=True, help='Print knobs', default=False)
-def cli(shape_predictor, blink_ratio, trigger, set_alarm, alarm_sound, alert_msg, webcam, frame_width, print_knobs):
-    """ Dedrowse daemon """
+@click.option(
+    '--print-knobs',
+    is_flag=True,
+    help='Print knobs',
+    default=False,
+    show_default=True,
+)
+def cli(
+    shape_predictor,
+    blink_ratio,
+    trigger,
+    set_alarm,
+    alarm_sound,
+    alert_msg,
+    webcam,
+    frame_width,
+    print_knobs,
+):
+    """ Dedrowse drowsines detector """
 
     if print_knobs:
         print(Knob.get_knob_defaults())
@@ -203,11 +226,4 @@ def draw_eyes(ear, frame, left_eye, right_eye):
     # draw the computed eye aspect ratio on the frame to help
     # with debugging and setting the correct eye aspect ratio
     # thresholds and frame counters
-    cv2.putText(
-        frame,
-        "eye ar: {:.2f}".format(ear),
-        (300, 30),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.7,
-        (0, 0, 255),
-        2)
+    cv2.putText(frame, "eye ar: {:.2f}".format(ear), (300, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
