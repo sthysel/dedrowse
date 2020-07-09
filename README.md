@@ -1,6 +1,6 @@
 # Dedrowse is a drowsiness detector
 
-![](docs/guy.png) 
+![](docs/guy.png)
 
 Dedrowse is a computer vision system that can automatically detect operator
 drowsiness in a real-time video stream and raise an alarm if the operator seems
@@ -32,7 +32,7 @@ Options:
 
 It works by assuming a drowsy face's eyes are closer that normal
 
-![Open](docs/open.png) 
+![Open](docs/open.png)
 
 
 ![Close](docs/close.png)
@@ -68,7 +68,6 @@ Check out source, enter repo and do:
 
 $ python -m venv ~/.virtualenvs/dedrowse
 $ source ~/.virtualenvs/dedrowse/bin/activate
-$ pip install -r requirements.txt
 $ pip install .
 
 ```
@@ -76,32 +75,30 @@ $ pip install .
 A devpi, rpm, deb or docker image can be arranged if required.
 
 ## Old pre-OpenCV 4 Notes
-This system is built arround opencv, numpy and scipy. On Arch its important to use the 
+This system is built arround opencv, numpy and scipy. On Arch its important to use the
 pre-built Python wrappers that supports the FFMpeg video stream handling. So use the sytem
 site packages as installed by pacman. Not python-opencv that ships a pre-built opencv lib in the
 wheel that does not have mgeg video streaming support compiled in.
 
-# System dependencies                                                                                              
-                                                                                                                    
-Arch Linux:                                                                                                         
-                                                                                                                    
-```bash                                                                                                             
+# System dependencies
+
+Arch Linux:
+
+```bash
 $ sudo pacman -S cmake boost
-```                                                                                                                 
+```
 
-## Development 
+## Development
 
-```bash                                                                                                             
+```bash
 $ mkvirtualenv --system-site-packages dedrowse
 $ pip install -r requirement.txt
 $ pip install -e .
-```                                                                                                                 
+```
 
-                                                                                                                    
-# Resources                                                                                                         
-                                                                                                                    
+
+# Resources
+
 * Built on work from http://www.pyimagesearch.com/2017/05/08/drowsiness-detection-opencv/
 * https://vision.fe.uni-lj.si/cvww2016/proceedings/papers/05.pdf
 * Alarm sounds from http://soundbible.com/tags-alarm.html
-
-
