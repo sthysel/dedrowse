@@ -1,12 +1,1 @@
-
-opencv-contrib-python==4.2.0.32
-tabulate==0.8.6
-click==7.0
-imutils==0.5.3
-numpy==1.18.1
-scipy==1.4.1
-knobs==2.0.2
-attentive==0.1.5
-dlib==19.19.0
-PyAudio==0.2.11
-
+-e .
