@@ -1,12 +1,9 @@
 # Dedrowse is a drowsiness detector
 
-![](docs/guy.png)
-
 Dedrowse is a computer vision system that can automatically detect operator
 drowsiness in a real-time video stream and raise an alarm if the operator seems
 to be drowsy. A operator may be a truck driver or a crane operator, or long
-distance driver. Or an elite athlete training in the cut-throat world of competitive
-NetFlix binge watching.
+distance driver.
 
 It is built on work by [Adrian Rosebrock](http://www.pyimagesearch.com/2017/05/08/drowsiness-detection-opencv/)
 
@@ -68,7 +65,7 @@ Check out source, enter repo and do:
 
 $ python -m venv ~/.virtualenvs/dedrowse
 $ source ~/.virtualenvs/dedrowse/bin/activate
-$ pip install .
+$ pip install -e .
 
 ```
 
